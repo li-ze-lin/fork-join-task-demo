@@ -1,8 +1,5 @@
-# 使用 java.util.concurrent.ForkJoinTask<T> 的一个demo 参考java8实战
+import java.util.concurrent.RecursiveTask;
 
-## 一个sum的demo
-继承RecursiveTask实现compute方法
-```java
 /**
  * 数组求和
  */
@@ -61,32 +58,3 @@ public class ForkJoinSumCounter extends RecursiveTask<Long> {
     }
 
 }
-```
-
-## 调用
-```java
-public class Main {
-
-    public static void main(String[] args) {
-        //生成1-1000的数组
-        long[] longs = LongStream.rangeClosed(1, 9999L).toArray();
-
-        //计算1+2+...+1000的值
-        RecursiveTask<Long> recursiveTask = new ForkJoinSumCounter(longs);
-        Long invoke = new ForkJoinPool().invoke(recursiveTask);
-
-        //计算1+2+...+1000的值
-        long forSum = 0;
-        for (long aLong : longs) {
-            forSum += aLong;
-        }
-
-        //对比看计算出来的值是否相同
-        System.out.println("ForkJoinSum:" + invoke + ", for:" + forSum + ", check:" + (invoke == forSum));
-    }
-    
-}
-```
-
-## 结果
-ForkJoinSum:49995000, for:49995000, check:true
